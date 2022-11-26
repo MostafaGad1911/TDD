@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TDD</string>
+    <string name="phone_number">Mobile Number</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+</resources>
