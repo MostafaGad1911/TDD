@@ -9,6 +9,7 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import junit.framework.TestCase.assertTrue
@@ -17,19 +18,16 @@ import org.junit.Test
 import mostafagad.projects.tdd.R
 import mostafagad.projects.tdd.utils.LoginValidator
 import org.junit.Assert
+import org.junit.Rule
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class MainActivityTest {
 
-    private lateinit var mainActivityScenario: ActivityScenario<MainActivity>
+    @get: Rule
+    val mainActivityScenario: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
-    @Before
-    fun setUp() {
-        mainActivityScenario = launchActivity()
-        mainActivityScenario.moveToState(Lifecycle.State.RESUMED)
-    }
 
     @Test
     fun testLoginUser(){
