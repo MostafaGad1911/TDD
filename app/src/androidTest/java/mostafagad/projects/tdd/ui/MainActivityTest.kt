@@ -1,31 +1,19 @@
 package mostafagad.projects.tdd.ui
 
-import android.view.View
 import android.widget.EditText
-import androidx.lifecycle.Lifecycle
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.TypeTextAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.google.android.material.textfield.TextInputEditText
-import junit.framework.TestCase.assertTrue
-import org.junit.Before
-import org.junit.Test
+import com.google.android.material.textfield.TextInputLayout
 import mostafagad.projects.tdd.R
-import mostafagad.projects.tdd.utils.LoginValidator
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.endsWith
-import org.hamcrest.Matcher
-import org.junit.Assert
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
@@ -35,23 +23,26 @@ class MainActivityTest {
     @get: Rule
     val mainActivityScenario: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
+    private val STRING_EMAIL_OR_PHONE = "0155317310"
+    private val STRING_PASSWORD = "Mostafa15#"
+
 
     @Test
     fun testLoginUser(){
-        onView(withId(R.id.mobileNumberEdt)).perform(click(), replaceText("0155317310"))
-        onView(withId(R.id.passwordNumberEdt)).perform(click(), replaceText("Mostafa15#"))
+        launchActivity<MainActivity>().use {
+            onView(withId(R.id.mobileNumberEdt)).perform(replaceText(STRING_EMAIL_OR_PHONE) , ViewActions.closeSoftKeyboard())
+            onView(withId(R.id.passwordNumberEdt)).perform(replaceText(STRING_PASSWORD) , ViewActions.closeSoftKeyboard())
+            Thread.sleep(500)
 
-        val checkPhoneValid = LoginValidator.validatePhone(phone =  onView(withId(R.id.mobileNumberEdt)).toString().trim())
-        val checkPasswordValid = LoginValidator.validatePassword(password = onView(withId(R.id.passwordNumberEdt)).toString().trim())
-        onView(withId(R.id.loginBtn)).perform(click())
-        assertTrue(checkPhoneValid && checkPasswordValid)
+            var email: TextInputLayout? = null
+            var password:TextInputLayout? = null
+            mainActivityScenario.scenario.onActivity {
+                email = it.findViewById(R.id.mobileNumber)
+                password = it.findViewById(R.id.passwordNumber)
+            }
+            onView(withId(R.id.loginBtn)).perform(click())
+            assert(email?.error.isNullOrEmpty() && password?.error.isNullOrEmpty())
+        }
+
     }
-
-    fun isEditTextInLayout(parentViewId: Int): Matcher<View> {
-        return allOf(
-            isDescendantOfA(withId(parentViewId)),
-            withClassName(endsWith("EditText"))
-        )
-    }
-
 }

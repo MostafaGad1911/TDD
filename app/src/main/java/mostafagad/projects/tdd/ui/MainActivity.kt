@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() , OnClickListener{
                 val password = mainActivityMainBinding.passwordNumberEdt.text.toString()
 
                 if (!validatePhone(phone = phone)){
-                    getString(R.string.invalid_phone).toast()
                     mainActivityMainBinding.mobileNumber.error = getString(R.string.invalid_phone)
                 }else if (!validatePassword(password = password)){
                     mainActivityMainBinding.passwordNumber.error = getString(R.string.weak_pass)
